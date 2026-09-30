@@ -1,0 +1,1133 @@
+/* =====================================================================
+   Sirstone Hero Slider — front-end styles
+   Every visual value below is only a default: the Elementor controls
+   override it through CSS variables / higher-specificity selectors.
+   ===================================================================== */
+
+@property --ssh-blind {
+	syntax: '<percentage>';
+	inherits: false;
+	initial-value: 0%;
+}
+
+/* ---------- base / reset ---------- */
+.ssh-hero,
+.ssh-hero *,
+.ssh-hero *::before,
+.ssh-hero *::after {
+	box-sizing: border-box;
+}
+
+.ssh-hero * {
+	margin: 0;
+	padding: 0;
+}
+
+.ssh-hero {
+	--ssh-gold: #d1b689;
+	--ssh-gold-hi: #e3cda3;
+	--ssh-onyx: #171310;
+	--ssh-cream: #F7F3E9;
+
+	--ssh-tr-dur: 1150ms;
+	--ssh-tr-ease: cubic-bezier(.76, 0, .24, 1);
+	--ssh-kb-scale: 1.08;
+	--ssh-kb-dur: 8s;
+	--ssh-par: 0px;
+	--ssh-hz: 1;
+	--ssh-a-dur: 800ms;
+	--ssh-a-step: 80ms;
+	--ssh-a-delay: 0ms;
+	--ssh-a-dist: 20px;
+	--ssh-t-step: 70ms;
+	--ssh-speed: 6500ms;
+	--ssh-mx: 0;
+	--ssh-my: 0;
+
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100vh;
+	min-height: 680px;
+	max-height: 980px;
+	overflow: hidden;
+	isolation: isolate;
+	background-color: var(--ssh-onyx);
+	color: var(--ssh-cream);
+	font-family: 'Manrope', sans-serif;
+	line-height: 1.6;
+	touch-action: pan-y;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.ssh-hero ul {
+	list-style: none;
+}
+
+.ssh-hero a {
+	text-decoration: none;
+}
+
+.ssh-hero button {
+	font: inherit;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.ssh-hero .ssh-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ---------- slides (stack) ---------- */
+.ssh-hero .ssh-slide {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	overflow: hidden;
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.ssh-hero .ssh-slide.is-leaving {
+	visibility: visible;
+	opacity: 1;
+	z-index: 1;
+}
+
+.ssh-hero .ssh-slide.is-active {
+	visibility: visible;
+	opacity: 1;
+	z-index: 2;
+	pointer-events: auto;
+}
+
+/* =====================================================================
+   Slide transitions — the incoming slide animates, the outgoing one
+   stays fully visible underneath (.is-leaving) until it is covered.
+   ===================================================================== */
+
+/* fade */
+.ssh-hero .ssh-slide[data-fx="fade"].is-active {
+	transition: opacity var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* zoom */
+.ssh-hero .ssh-slide[data-fx="zoom"] {
+	transform: scale(1.18);
+}
+
+.ssh-hero .ssh-slide[data-fx="zoom"].is-active,
+.ssh-hero .ssh-slide[data-fx="zoom"].is-leaving {
+	transform: none;
+}
+
+.ssh-hero .ssh-slide[data-fx="zoom"].is-active {
+	transition: opacity var(--ssh-tr-dur) var(--ssh-tr-ease), transform var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* blur dissolve */
+.ssh-hero .ssh-slide[data-fx="blur"] {
+	filter: blur(28px);
+}
+
+.ssh-hero .ssh-slide[data-fx="blur"].is-active,
+.ssh-hero .ssh-slide[data-fx="blur"].is-leaving {
+	filter: none;
+}
+
+.ssh-hero .ssh-slide[data-fx="blur"].is-active {
+	transition: opacity var(--ssh-tr-dur) var(--ssh-tr-ease), filter var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* push / slide */
+.ssh-hero .ssh-slide[data-fx="slide"] {
+	transform: translate3d(100%, 0, 0);
+}
+
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="slide"] {
+	transform: translate3d(-100%, 0, 0);
+}
+
+.ssh-hero .ssh-slide[data-fx="slide"].is-active,
+.ssh-hero .ssh-slide[data-fx="slide"].is-leaving {
+	transform: none;
+}
+
+.ssh-hero .ssh-slide[data-fx="slide"].is-active {
+	transition: transform var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+.ssh-hero[data-tr="slide"] .ssh-slide.is-leaving {
+	transform: translate3d(-28%, 0, 0);
+	transition: transform var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+.ssh-hero[data-tr="slide"][data-dir="prev"] .ssh-slide.is-leaving {
+	transform: translate3d(28%, 0, 0);
+}
+
+/* diagonal wipe (the original Sirstone transition) */
+.ssh-hero .ssh-slide[data-fx="diagonal"] {
+	clip-path: polygon(-10% 0, 4% 0, -24% 100%, -38% 100%);
+}
+
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="diagonal"] {
+	clip-path: polygon(110% 0, 96% 0, 124% 100%, 138% 100%);
+}
+
+.ssh-hero .ssh-slide[data-fx="diagonal"].is-active,
+.ssh-hero .ssh-slide[data-fx="diagonal"].is-leaving {
+	clip-path: polygon(-10% 0, 110% 0, 110% 100%, -38% 100%);
+}
+
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="diagonal"].is-active,
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="diagonal"].is-leaving {
+	clip-path: polygon(110% 0, -10% 0, -10% 100%, 138% 100%);
+}
+
+.ssh-hero .ssh-slide[data-fx="diagonal"].is-active {
+	transition: clip-path var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* straight wipe, left → right */
+.ssh-hero .ssh-slide[data-fx="wipe-x"] {
+	clip-path: inset(0 100% 0 0);
+}
+
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="wipe-x"] {
+	clip-path: inset(0 0 0 100%);
+}
+
+.ssh-hero .ssh-slide[data-fx="wipe-x"].is-active,
+.ssh-hero .ssh-slide[data-fx="wipe-x"].is-leaving,
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="wipe-x"].is-active,
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="wipe-x"].is-leaving {
+	clip-path: inset(0 0 0 0);
+}
+
+.ssh-hero .ssh-slide[data-fx="wipe-x"].is-active {
+	transition: clip-path var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* straight wipe, top → bottom */
+.ssh-hero .ssh-slide[data-fx="wipe-y"] {
+	clip-path: inset(0 0 100% 0);
+}
+
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="wipe-y"] {
+	clip-path: inset(100% 0 0 0);
+}
+
+.ssh-hero .ssh-slide[data-fx="wipe-y"].is-active,
+.ssh-hero .ssh-slide[data-fx="wipe-y"].is-leaving,
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="wipe-y"].is-active,
+.ssh-hero[data-dir="prev"] .ssh-slide[data-fx="wipe-y"].is-leaving {
+	clip-path: inset(0 0 0 0);
+}
+
+.ssh-hero .ssh-slide[data-fx="wipe-y"].is-active {
+	transition: clip-path var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* split open from the centre (horizontal / vertical) */
+.ssh-hero .ssh-slide[data-fx="split-x"] {
+	clip-path: inset(0 50% 0 50%);
+}
+
+.ssh-hero .ssh-slide[data-fx="split-y"] {
+	clip-path: inset(50% 0 50% 0);
+}
+
+.ssh-hero .ssh-slide[data-fx="split-x"].is-active,
+.ssh-hero .ssh-slide[data-fx="split-x"].is-leaving,
+.ssh-hero .ssh-slide[data-fx="split-y"].is-active,
+.ssh-hero .ssh-slide[data-fx="split-y"].is-leaving {
+	clip-path: inset(0 0 0 0);
+}
+
+.ssh-hero .ssh-slide[data-fx="split-x"].is-active,
+.ssh-hero .ssh-slide[data-fx="split-y"].is-active {
+	transition: clip-path var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* circle reveal */
+.ssh-hero .ssh-slide[data-fx="circle"] {
+	clip-path: circle(0% at 50% 50%);
+}
+
+.ssh-hero .ssh-slide[data-fx="circle"].is-active,
+.ssh-hero .ssh-slide[data-fx="circle"].is-leaving {
+	clip-path: circle(150% at 50% 50%);
+}
+
+.ssh-hero .ssh-slide[data-fx="circle"].is-active {
+	transition: clip-path var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+/* venetian blinds */
+.ssh-hero .ssh-slide[data-fx="blinds"] {
+	--ssh-blind: 0%;
+	-webkit-mask-image: repeating-linear-gradient(90deg, #000 0, #000 var(--ssh-blind), transparent var(--ssh-blind), transparent 10%);
+	mask-image: repeating-linear-gradient(90deg, #000 0, #000 var(--ssh-blind), transparent var(--ssh-blind), transparent 10%);
+}
+
+.ssh-hero .ssh-slide[data-fx="blinds"].is-active {
+	--ssh-blind: 10.05%;
+	transition: --ssh-blind var(--ssh-tr-dur) var(--ssh-tr-ease);
+}
+
+.ssh-hero .ssh-slide[data-fx="blinds"].is-leaving {
+	-webkit-mask-image: none;
+	mask-image: none;
+}
+
+/* cross-fading effects: fade the outgoing text away quickly so two headlines never overlap */
+.ssh-hero[data-tr="fade"] .ssh-slide.is-leaving .ssh-content,
+.ssh-hero[data-tr="zoom"] .ssh-slide.is-leaving .ssh-content,
+.ssh-hero[data-tr="blur"] .ssh-slide.is-leaving .ssh-content {
+	opacity: 0;
+	transition: opacity .35s ease;
+}
+
+/* =====================================================================
+   Media: image, parallax wrapper, Ken Burns, looks
+   ===================================================================== */
+.ssh-hero .ssh-media {
+	position: absolute;
+	inset: calc(var(--ssh-par) * -1);
+	transform: translate3d(calc(var(--ssh-mx) * var(--ssh-par) * -1), calc(var(--ssh-my) * var(--ssh-par) * -1), 0);
+	transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ssh-hero .ssh-bg {
+	position: absolute;
+	inset: 0;
+	transform-origin: center;
+	--ssh-kb-pan: calc((var(--ssh-kb-scale) - 1) * 50%);
+	transition: filter .8s ease;
+}
+
+.ssh-hero .ssh-bg picture {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.ssh-hero .ssh-bg .ssh-img {
+	display: block;
+	width: 100%;
+	max-width: none;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	transition: transform .9s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ssh-hero:hover .ssh-bg .ssh-img {
+	transform: scale(var(--ssh-hz));
+}
+
+/* Ken Burns — same animation name while active + leaving so it never restarts */
+.ssh-hero .ssh-slide[data-kb="zoom-in"] { --ssh-kb: ssh-kb-zoom-in; }
+.ssh-hero .ssh-slide[data-kb="zoom-out"] { --ssh-kb: ssh-kb-zoom-out; }
+.ssh-hero .ssh-slide[data-kb="pan-left"] { --ssh-kb: ssh-kb-pan-left; }
+.ssh-hero .ssh-slide[data-kb="pan-right"] { --ssh-kb: ssh-kb-pan-right; }
+.ssh-hero .ssh-slide[data-kb="pan-up"] { --ssh-kb: ssh-kb-pan-up; }
+.ssh-hero .ssh-slide[data-kb="pan-down"] { --ssh-kb: ssh-kb-pan-down; }
+.ssh-hero .ssh-slide[data-kb="rotate"] { --ssh-kb: ssh-kb-rotate; }
+
+.ssh-hero .ssh-slide.is-active .ssh-bg,
+.ssh-hero .ssh-slide.is-leaving .ssh-bg {
+	animation: var(--ssh-kb, none) var(--ssh-kb-dur) linear both;
+}
+
+@keyframes ssh-kb-zoom-in {
+	from { transform: scale(1); }
+	to { transform: scale(var(--ssh-kb-scale)); }
+}
+
+@keyframes ssh-kb-zoom-out {
+	from { transform: scale(var(--ssh-kb-scale)); }
+	to { transform: scale(1); }
+}
+
+@keyframes ssh-kb-pan-left {
+	from { transform: translate3d(var(--ssh-kb-pan), 0, 0) scale(var(--ssh-kb-scale)); }
+	to { transform: translate3d(calc(var(--ssh-kb-pan) * -1), 0, 0) scale(var(--ssh-kb-scale)); }
+}
+
+@keyframes ssh-kb-pan-right {
+	from { transform: translate3d(calc(var(--ssh-kb-pan) * -1), 0, 0) scale(var(--ssh-kb-scale)); }
+	to { transform: translate3d(var(--ssh-kb-pan), 0, 0) scale(var(--ssh-kb-scale)); }
+}
+
+@keyframes ssh-kb-pan-up {
+	from { transform: translate3d(0, var(--ssh-kb-pan), 0) scale(var(--ssh-kb-scale)); }
+	to { transform: translate3d(0, calc(var(--ssh-kb-pan) * -1), 0) scale(var(--ssh-kb-scale)); }
+}
+
+@keyframes ssh-kb-pan-down {
+	from { transform: translate3d(0, calc(var(--ssh-kb-pan) * -1), 0) scale(var(--ssh-kb-scale)); }
+	to { transform: translate3d(0, var(--ssh-kb-pan), 0) scale(var(--ssh-kb-scale)); }
+}
+
+@keyframes ssh-kb-rotate {
+	from { transform: scale(calc(var(--ssh-kb-scale) + .12)) rotate(-2deg); }
+	to { transform: scale(var(--ssh-kb-scale)) rotate(0deg); }
+}
+
+/* image "looks" (per slide preset) */
+.ssh-hero .ssh-slide[data-look="grayscale"] .ssh-img { filter: grayscale(1); }
+.ssh-hero .ssh-slide[data-look="sepia"] .ssh-img { filter: sepia(.85) contrast(1.05); }
+.ssh-hero .ssh-slide[data-look="warm"] .ssh-img { filter: sepia(.28) saturate(1.3) hue-rotate(-10deg) contrast(1.05); }
+.ssh-hero .ssh-slide[data-look="cool"] .ssh-img { filter: hue-rotate(14deg) saturate(.9) brightness(1.05); }
+.ssh-hero .ssh-slide[data-look="dramatic"] .ssh-img { filter: contrast(1.25) brightness(.9) saturate(1.1); }
+.ssh-hero .ssh-slide[data-look="faded"] .ssh-img { filter: contrast(.9) brightness(1.08) saturate(.75); }
+.ssh-hero .ssh-slide[data-look="vivid"] .ssh-img { filter: saturate(1.5) contrast(1.08); }
+.ssh-hero .ssh-slide[data-look="noir"] .ssh-img { filter: grayscale(1) contrast(1.3) brightness(.85); }
+
+/* ---------- overlay layers (all sit under the text) ---------- */
+.ssh-hero .ssh-scrim,
+.ssh-hero .ssh-overlay,
+.ssh-hero .ssh-overlay-slide,
+.ssh-hero .ssh-tint,
+.ssh-hero .ssh-vignette,
+.ssh-hero .ssh-shine {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.ssh-hero .ssh-scrim {
+	background:
+		linear-gradient(100deg, rgba(23, 19, 16, .92) 0%, rgba(23, 19, 16, .72) 26%, rgba(23, 19, 16, .28) 52%, rgba(23, 19, 16, .12) 68%, rgba(23, 19, 16, .42) 100%),
+		linear-gradient(0deg, rgba(23, 19, 16, .5) 0%, transparent 30%);
+}
+
+.ssh-hero .ssh-vignette {
+	background: radial-gradient(ellipse at center, transparent var(--ssh-vg-start, 55%), var(--ssh-vg-color, rgba(0, 0, 0, .6)) 100%);
+}
+
+/* cursor spotlight */
+.ssh-hero .ssh-spot {
+	position: absolute;
+	left: calc(50% + var(--ssh-mx) * 50%);
+	top: calc(50% + var(--ssh-my) * 50%);
+	width: var(--ssh-spot-size, 600px);
+	height: var(--ssh-spot-size, 600px);
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	background: radial-gradient(circle, var(--ssh-spot-color, rgba(209, 182, 137, .28)) 0%, transparent 68%);
+	mix-blend-mode: var(--ssh-spot-blend, screen);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity .5s ease;
+}
+
+.ssh-hero.is-hover .ssh-spot {
+	opacity: 1;
+}
+
+/* light sweep */
+.ssh-hero .ssh-shine {
+	overflow: hidden;
+}
+
+.ssh-hero .ssh-shine::before {
+	content: '';
+	position: absolute;
+	top: -20%;
+	bottom: -20%;
+	left: 0;
+	width: 38%;
+	background: linear-gradient(90deg, transparent, var(--ssh-shine-color, rgba(255, 255, 255, .22)), transparent);
+	transform: translate3d(-160%, 0, 0) skewX(-18deg);
+	opacity: 0;
+}
+
+.ssh-hero .ssh-slide.is-active .ssh-shine::before {
+	animation: ssh-shine var(--ssh-shine-int, 7s) ease-in-out var(--ssh-shine-delay, 1.2s) infinite;
+}
+
+@keyframes ssh-shine {
+	0% { transform: translate3d(-160%, 0, 0) skewX(-18deg); opacity: 1; }
+	35%, 100% { transform: translate3d(420%, 0, 0) skewX(-18deg); opacity: 1; }
+}
+
+/* film grain */
+.ssh-hero .ssh-grain {
+	position: absolute;
+	inset: -50%;
+	width: 200%;
+	height: 200%;
+	pointer-events: none;
+	opacity: var(--ssh-grain-o, .12);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.ssh-hero .ssh-slide.is-active .ssh-grain--animate {
+	animation: ssh-grain .9s steps(6) infinite;
+}
+
+@keyframes ssh-grain {
+	0% { transform: translate(0, 0); }
+	20% { transform: translate(-6%, 4%); }
+	40% { transform: translate(5%, -7%); }
+	60% { transform: translate(-4%, -3%); }
+	80% { transform: translate(7%, 5%); }
+	100% { transform: translate(0, 0); }
+}
+
+/* =====================================================================
+   Content
+   ===================================================================== */
+.ssh-hero .ssh-content {
+	position: relative;
+	z-index: 10;
+	height: 100%;
+	max-width: 960px;
+	padding: 0 200px 90px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: var(--ssh-ai, flex-start);
+	text-align: left;
+}
+
+/* entrance animation for each content block */
+.ssh-hero .ssh-a {
+	opacity: 0;
+	transform: translate3d(0, var(--ssh-a-dist), 0);
+}
+
+.ssh-hero[data-anim="down"] .ssh-a { transform: translate3d(0, calc(var(--ssh-a-dist) * -1), 0); }
+.ssh-hero[data-anim="left"] .ssh-a { transform: translate3d(calc(var(--ssh-a-dist) * -1), 0, 0); }
+.ssh-hero[data-anim="right"] .ssh-a { transform: translate3d(var(--ssh-a-dist), 0, 0); }
+.ssh-hero[data-anim="zoom"] .ssh-a { transform: scale(.9); }
+.ssh-hero[data-anim="blur"] .ssh-a { transform: translate3d(0, calc(var(--ssh-a-dist) * .5), 0); filter: blur(12px); }
+.ssh-hero[data-anim="none"] .ssh-a { opacity: 1; transform: none; }
+
+.ssh-hero .ssh-slide.is-active .ssh-a,
+.ssh-hero .ssh-slide.is-leaving .ssh-a {
+	opacity: 1;
+	transform: none;
+	filter: none;
+}
+
+.ssh-hero .ssh-slide.is-active .ssh-a {
+	transition:
+		opacity var(--ssh-a-dur) ease calc(var(--ssh-a-delay) + var(--ssh-n, 0) * var(--ssh-a-step)),
+		transform var(--ssh-a-dur) cubic-bezier(.22, 1, .36, 1) calc(var(--ssh-a-delay) + var(--ssh-n, 0) * var(--ssh-a-step)),
+		filter var(--ssh-a-dur) ease calc(var(--ssh-a-delay) + var(--ssh-n, 0) * var(--ssh-a-step));
+}
+
+.ssh-hero .ssh-eyebrow { --ssh-n: 0; }
+.ssh-hero .ssh-title { --ssh-n: 1; }
+.ssh-hero .ssh-desc { --ssh-n: 2; }
+.ssh-hero .ssh-actions { --ssh-n: 3; }
+.ssh-hero .ssh-specs { --ssh-n: 4; }
+
+/* eyebrow */
+.ssh-hero .ssh-eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	font-family: 'Manrope', sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: .24em;
+	text-transform: uppercase;
+	color: var(--ssh-gold);
+	justify-content: var(--ssh-jc, flex-start);
+}
+
+.ssh-hero .ssh-eyebrow::before {
+	content: '';
+	flex: none;
+	width: 22px;
+	height: 1px;
+	background: currentColor;
+}
+
+.ssh-hero .ssh-eyebrow.ssh-no-line::before {
+	display: none;
+}
+
+/* title */
+.ssh-hero .ssh-title {
+	font-family: 'Marcellus', serif;
+	font-weight: 500;
+	color: var(--ssh-cream);
+	letter-spacing: .02em;
+	font-size: 60px;
+	line-height: 1.06;
+	margin: 22px 0 20px;
+}
+
+/* split-text reveal (words / letters) */
+.ssh-hero .ssh-title--split {
+	opacity: 1;
+	transform: none;
+	filter: none;
+}
+
+.ssh-hero .ssh-title--split .ssh-w {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+	white-space: nowrap;
+	padding: .12em 0 .16em;
+	margin: -.12em 0 -.16em;
+}
+
+.ssh-hero .ssh-title--split .ssh-wi,
+.ssh-hero .ssh-title--split .ssh-ch {
+	display: inline-block;
+	transform: translate3d(0, 118%, 0);
+	will-change: transform;
+}
+
+.ssh-hero .ssh-slide.is-active .ssh-title--split .ssh-wi,
+.ssh-hero .ssh-slide.is-active .ssh-title--split .ssh-ch,
+.ssh-hero .ssh-slide.is-leaving .ssh-title--split .ssh-wi,
+.ssh-hero .ssh-slide.is-leaving .ssh-title--split .ssh-ch {
+	transform: none;
+}
+
+.ssh-hero .ssh-slide.is-active .ssh-title--split .ssh-wi,
+.ssh-hero .ssh-slide.is-active .ssh-title--split .ssh-ch {
+	transition: transform 950ms cubic-bezier(.22, 1, .36, 1) calc(var(--ssh-a-delay) + 140ms + var(--i, 0) * var(--ssh-t-step));
+}
+
+/* description */
+.ssh-hero .ssh-desc {
+	font-family: 'Manrope', sans-serif;
+	font-size: 16.5px;
+	line-height: 1.7;
+	max-width: 480px;
+	margin-bottom: 36px;
+	color: rgba(242, 236, 222, .78);
+}
+
+.ssh-hero .ssh-desc p {
+	margin: 0 0 .8em;
+}
+
+.ssh-hero .ssh-desc p:last-child {
+	margin-bottom: 0;
+}
+
+.ssh-hero .ssh-desc a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+/* buttons */
+.ssh-hero .ssh-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	justify-content: var(--ssh-jc, flex-start);
+}
+
+.ssh-hero a.ssh-btn,
+.ssh-hero span.ssh-btn {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	overflow: hidden;
+	padding: 16px 32px;
+	font-family: 'Manrope', sans-serif;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	text-decoration: none !important;
+	border: 1px solid transparent;
+	border-radius: 1px;
+	cursor: pointer;
+	transition: all .25s ease;
+}
+
+.ssh-hero a.ssh-btn--primary,
+.ssh-hero span.ssh-btn--primary {
+	background-color: var(--ssh-gold);
+	border-color: var(--ssh-gold);
+	color: var(--ssh-onyx);
+}
+
+.ssh-hero a.ssh-btn--primary:hover,
+.ssh-hero a.ssh-btn--primary:focus-visible {
+	background-color: var(--ssh-gold-hi);
+	border-color: var(--ssh-gold-hi);
+	color: var(--ssh-onyx);
+}
+
+.ssh-hero a.ssh-btn--secondary,
+.ssh-hero span.ssh-btn--secondary {
+	background-color: transparent;
+	border-color: rgba(242, 236, 222, .5);
+	color: var(--ssh-cream);
+}
+
+.ssh-hero a.ssh-btn--secondary:hover,
+.ssh-hero a.ssh-btn--secondary:focus-visible {
+	border-color: var(--ssh-gold-hi);
+	color: var(--ssh-gold-hi);
+}
+
+.ssh-hero .ssh-btn:focus-visible {
+	outline: 2px solid var(--ssh-gold-hi);
+	outline-offset: 3px;
+}
+
+.ssh-hero .ssh-btn__icon {
+	display: inline-flex;
+	align-items: center;
+	font-size: 14px;
+	line-height: 1;
+}
+
+.ssh-hero .ssh-btn__icon svg {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+/* button hover effects */
+.ssh-hero[data-btn-fx="lift"] .ssh-btn:hover {
+	transform: translateY(-3px);
+}
+
+.ssh-hero[data-btn-fx="glow"] .ssh-btn:hover {
+	box-shadow: 0 0 28px rgba(209, 182, 137, .5);
+}
+
+.ssh-hero[data-btn-fx="sweep"] .ssh-btn::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -60%;
+	width: 40%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .38), transparent);
+	transform: skewX(-20deg);
+	transition: left .65s ease;
+	pointer-events: none;
+}
+
+.ssh-hero[data-btn-fx="sweep"] .ssh-btn:hover::after {
+	left: 130%;
+}
+
+/* specs strip */
+.ssh-hero .ssh-specs {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 38px;
+	padding-top: 22px;
+	border-top: 1px solid rgba(242, 236, 222, .22);
+	justify-content: var(--ssh-jc, flex-start);
+	--ssh-spec-gap: 34px;
+}
+
+.ssh-hero .ssh-spec {
+	padding: 0 var(--ssh-spec-gap);
+}
+
+.ssh-hero .ssh-spec:first-child {
+	padding-left: 0;
+}
+
+.ssh-hero .ssh-spec:last-child {
+	padding-right: 0;
+}
+
+.ssh-hero .ssh-spec + .ssh-spec {
+	border-left: var(--ssh-spec-div-w, 1px) solid var(--ssh-spec-div-c, rgba(242, 236, 222, .18));
+}
+
+.ssh-hero .ssh-spec__k {
+	margin-bottom: 5px;
+	font-family: 'Manrope', sans-serif;
+	font-size: 10px;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	color: rgba(242, 236, 222, .5);
+}
+
+.ssh-hero .ssh-spec__v {
+	font-family: 'Marcellus', serif;
+	font-size: 15.5px;
+	color: #F0E8D2;
+}
+
+/* =====================================================================
+   Rail (vertical index)
+   ===================================================================== */
+.ssh-hero .ssh-rail {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 30;
+	width: 84px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(90deg, rgba(23, 19, 16, .55), transparent);
+}
+
+.ssh-hero.ssh-hero--rail-right .ssh-rail {
+	left: auto;
+	right: 0;
+	background: linear-gradient(270deg, rgba(23, 19, 16, .55), transparent);
+}
+
+.ssh-hero .ssh-rail .ssh-rail__btn,
+.ssh-hero .ssh-rail .ssh-rail__btn:hover,
+.ssh-hero .ssh-rail .ssh-rail__btn:focus {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	padding: 16px 0;
+	background: none;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	cursor: pointer;
+	color: rgba(242, 236, 222, .4);
+	transition: color .3s ease;
+}
+
+.ssh-hero .ssh-rail .ssh-rail__btn:hover,
+.ssh-hero .ssh-rail .ssh-rail__btn.is-active {
+	color: var(--ssh-gold-hi);
+}
+
+.ssh-hero .ssh-rail .ssh-rail__btn:focus-visible {
+	outline: 1px solid var(--ssh-gold-hi);
+	outline-offset: 2px;
+}
+
+.ssh-hero .ssh-rail__n {
+	font-family: 'Manrope', sans-serif;
+	font-size: 11px;
+	letter-spacing: .06em;
+	line-height: 1.6;
+}
+
+.ssh-hero .ssh-rail__tick {
+	display: block;
+	width: 1px;
+	height: 26px;
+	background: currentColor;
+	opacity: .5;
+	transition: height .35s ease, background .3s ease, opacity .3s ease;
+}
+
+.ssh-hero .ssh-rail__btn.is-active .ssh-rail__tick {
+	height: 46px;
+	opacity: 1;
+}
+
+/* crop marks */
+.ssh-hero .ssh-corner {
+	position: absolute;
+	z-index: 25;
+	width: 26px;
+	height: 26px;
+	pointer-events: none;
+}
+
+.ssh-hero .ssh-corner::before,
+.ssh-hero .ssh-corner::after {
+	content: '';
+	position: absolute;
+	background: rgba(242, 236, 222, .55);
+}
+
+.ssh-hero .ssh-corner::before {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+}
+
+.ssh-hero .ssh-corner::after {
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 100%;
+}
+
+.ssh-hero .ssh-corner--tl { top: 28px; left: 28px; }
+.ssh-hero .ssh-corner--tr { top: 28px; right: 28px; transform: scaleX(-1); }
+.ssh-hero .ssh-corner--bl { bottom: 28px; left: 28px; transform: scaleY(-1); }
+.ssh-hero .ssh-corner--br { bottom: 28px; right: 28px; transform: scale(-1, -1); }
+
+/* =====================================================================
+   Progress strip
+   ===================================================================== */
+.ssh-hero .ssh-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 30;
+	display: flex;
+	height: 64px;
+	border-top: 1px solid rgba(242, 236, 222, .18);
+	background: rgba(23, 19, 16, .35);
+	-webkit-backdrop-filter: blur(3px);
+	backdrop-filter: blur(3px);
+}
+
+.ssh-hero .ssh-progress .ssh-progress__btn,
+.ssh-hero .ssh-progress .ssh-progress__btn:hover,
+.ssh-hero .ssh-progress .ssh-progress__btn:focus {
+	position: relative;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+	overflow: hidden;
+	background: none;
+	border: 0;
+	border-right: 1px solid rgba(242, 236, 222, .14);
+	border-radius: 0;
+	box-shadow: none;
+	cursor: pointer;
+	text-align: left;
+}
+
+.ssh-hero .ssh-progress .ssh-progress__btn:last-child {
+	border-right: 0;
+}
+
+.ssh-hero .ssh-progress .ssh-progress__btn:focus-visible {
+	outline: 1px solid var(--ssh-gold-hi);
+	outline-offset: -3px;
+}
+
+.ssh-hero .ssh-progress__fill {
+	position: absolute;
+	inset: 0;
+	background: rgba(209, 182, 137, .15);
+	transform: scaleX(0);
+	transform-origin: left center;
+}
+
+[dir="rtl"] .ssh-hero .ssh-progress__fill {
+	transform-origin: right center;
+}
+
+.ssh-hero .ssh-progress__btn.is-done .ssh-progress__fill {
+	transform: scaleX(1);
+}
+
+.ssh-hero .ssh-progress__btn.is-run .ssh-progress__fill {
+	animation: ssh-fill var(--ssh-speed) linear forwards;
+}
+
+.ssh-hero.is-paused .ssh-progress__btn.is-run .ssh-progress__fill {
+	animation-play-state: paused;
+}
+
+.ssh-hero.is-static .ssh-progress__btn.is-active .ssh-progress__fill {
+	transform: scaleX(1);
+}
+
+@keyframes ssh-fill {
+	from { transform: scaleX(0); }
+	to { transform: scaleX(1); }
+}
+
+.ssh-hero .ssh-progress__label {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: 'Manrope', sans-serif;
+	font-size: 11.5px;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	color: rgba(242, 236, 222, .55);
+	transition: color .3s ease;
+}
+
+.ssh-hero .ssh-progress__btn.is-active .ssh-progress__label {
+	color: var(--ssh-cream);
+}
+
+.ssh-hero .ssh-progress__dot {
+	flex: none;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: currentColor;
+	opacity: .6;
+	transition: background .3s ease, opacity .3s ease, transform .3s ease;
+}
+
+.ssh-hero .ssh-progress__btn.is-active .ssh-progress__dot {
+	background: var(--ssh-gold);
+	opacity: 1;
+	transform: scale(1.3);
+}
+
+/* =====================================================================
+   Prev / next / play-pause cluster
+   ===================================================================== */
+.ssh-hero .ssh-ctrls {
+	position: absolute;
+	right: var(--ssh-ctrl-x, 28px);
+	bottom: var(--ssh-ctrl-y, 96px);
+	z-index: 31;
+	display: flex;
+	gap: 8px;
+}
+
+.ssh-hero.ssh-hero--ctrl-left .ssh-ctrls {
+	right: auto;
+	left: var(--ssh-ctrl-x, 28px);
+}
+
+.ssh-hero .ssh-ctrls .ssh-ctrl,
+.ssh-hero .ssh-ctrls .ssh-ctrl:hover,
+.ssh-hero .ssh-ctrls .ssh-ctrl:focus {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	padding: 0;
+	font-size: 16px;
+	line-height: 1;
+	color: var(--ssh-cream);
+	background: rgba(23, 19, 16, .35);
+	border: 1px solid rgba(242, 236, 222, .4);
+	border-radius: 50%;
+	box-shadow: none;
+	cursor: pointer;
+	-webkit-backdrop-filter: blur(3px);
+	backdrop-filter: blur(3px);
+	transition: all .3s ease;
+}
+
+.ssh-hero .ssh-ctrls .ssh-ctrl:hover,
+.ssh-hero .ssh-ctrls .ssh-ctrl:focus-visible {
+	color: var(--ssh-onyx);
+	background: var(--ssh-gold);
+	border-color: var(--ssh-gold);
+}
+
+.ssh-hero .ssh-ctrl svg {
+	width: 1em;
+	height: 1em;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.ssh-hero .ssh-ctrl i {
+	line-height: 1;
+}
+
+.ssh-hero .ssh-ctrl--play .ssh-ctrl__pause { display: block; }
+.ssh-hero .ssh-ctrl--play .ssh-ctrl__play { display: none; }
+.ssh-hero .ssh-ctrl--play.is-off .ssh-ctrl__pause { display: none; }
+.ssh-hero .ssh-ctrl--play.is-off .ssh-ctrl__play { display: block; }
+
+/* =====================================================================
+   Responsive fallbacks (the Elementor controls override these)
+   ===================================================================== */
+@media (max-width: 1024px) {
+	.ssh-hero .ssh-content {
+		padding: 0 100px 100px 120px;
+	}
+}
+
+@media (max-width: 767px) {
+	.ssh-hero {
+		height: 93vh;
+		min-height: 480px;
+	}
+
+	.ssh-hero .ssh-rail,
+	.ssh-hero .ssh-corner {
+		display: none;
+	}
+
+	.ssh-hero .ssh-content {
+		padding: 0 28px 100px;
+	}
+
+	.ssh-hero .ssh-title {
+		font-size: 38px;
+	}
+
+	.ssh-hero .ssh-specs {
+		gap: 14px 20px;
+	}
+
+	.ssh-hero .ssh-spec,
+	.ssh-hero .ssh-spec:first-child,
+	.ssh-hero .ssh-spec:last-child {
+		flex: 1 1 40%;
+		min-width: 110px;
+		padding: 0;
+	}
+
+	.ssh-hero .ssh-spec + .ssh-spec {
+		border-left: 0;
+	}
+
+	.ssh-hero .ssh-progress__name {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ssh-hero .ssh-slide,
+	.ssh-hero .ssh-slide *,
+	.ssh-hero .ssh-slide::before,
+	.ssh-hero .ssh-slide::after,
+	.ssh-hero .ssh-media,
+	.ssh-hero .ssh-btn {
+		animation: none !important;
+		transition: none !important;
+	}
+
+	.ssh-hero .ssh-a,
+	.ssh-hero .ssh-title--split .ssh-wi,
+	.ssh-hero .ssh-title--split .ssh-ch {
+		transform: none !important;
+		filter: none !important;
+	}
+
+	.ssh-hero .ssh-slide .ssh-shine,
+	.ssh-hero .ssh-slide .ssh-grain {
+		display: none;
+	}
+}
