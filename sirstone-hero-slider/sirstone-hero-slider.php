@@ -1,14 +1,16 @@
 <?php
 /**
  * Plugin Name:       Sirstone Hero Slider for Elementor
+ * Plugin URI: https://github.com/saeedamini144/sirstone-hero-slider
  * Description:       ویجت اسلایدر هیرو سیرستون برای المنتور؛ هر اسلاید یک تب مستقل با تنظیمات محتوا، تصویر و استایل کامل، به‌همراه افکت‌های متنوع تصویر و انتقال.
- * Author:            Sirstone
+ * Author: Saeed Amini
+ * Author URI: https://github.com/saeedamini144
  * Version:           1.0.0
  * Requires PHP:      7.4
  * Requires at least: 6.0
  * Requires Plugins:  elementor
  * Text Domain:       sirstone-hero
- * Elementor tested up to: 3.30.0
+ * Elementor tested up to: 4.3.2
  */
 
 defined( 'ABSPATH' ) || exit;
