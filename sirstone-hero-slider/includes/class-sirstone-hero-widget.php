@@ -203,6 +203,23 @@ class Sirstone_Hero_Widget extends Widget_Base {
 		];
 	}
 
+	/**
+	 * Normalises a saved side to 'start' / 'end'. Older versions stored the
+	 * physical values 'left' / 'right', which keep their on-screen meaning.
+	 */
+	private static function logical_side( $value, $fallback, $rtl ) {
+		if ( 'start' === $value || 'end' === $value ) {
+			return $value;
+		}
+		if ( 'left' === $value ) {
+			return $rtl ? 'end' : 'start';
+		}
+		if ( 'right' === $value ) {
+			return $rtl ? 'start' : 'end';
+		}
+		return $fallback;
+	}
+
 	/** {{TOP}} {{RIGHT}} {{BOTTOM}} {{LEFT}} shorthand for a property. */
 	private static function dims( $property ) {
 		return $property . ': {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};';
@@ -309,16 +326,20 @@ class Sirstone_Hero_Widget extends Widget_Base {
 			'mouseFx'    => $mouse_fx,
 		];
 
+		// The slider follows the site language direction (RTL: Persian, Arabic, … / LTR: the rest).
+		$rtl = is_rtl();
+
 		$classes = [ 'ssh-hero' ];
-		if ( 'right' === $s['rail_position'] ) {
-			$classes[] = 'ssh-hero--rail-right';
+		if ( 'end' === self::logical_side( $s['rail_position'], 'start', $rtl ) ) {
+			$classes[] = 'ssh-hero--rail-end';
 		}
-		if ( 'left' === $s['ctrl_position'] ) {
-			$classes[] = 'ssh-hero--ctrl-left';
+		if ( 'start' === self::logical_side( $s['ctrl_position'], 'end', $rtl ) ) {
+			$classes[] = 'ssh-hero--ctrl-start';
 		}
 
 		$this->add_render_attribute( 'root', [
 			'class'                => $classes,
+			'dir'                  => $rtl ? 'rtl' : 'ltr',
 			'data-settings'        => wp_json_encode( $config ),
 			'data-anim'            => $s['content_anim'],
 			'data-btn-fx'          => $s['btn_hover_fx'],

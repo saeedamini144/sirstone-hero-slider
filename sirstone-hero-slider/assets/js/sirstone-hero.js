@@ -29,6 +29,9 @@
 		this.btnNext = root.querySelector('.ssh-ctrl--next');
 		this.btnPlay = root.querySelector('.ssh-ctrl--play');
 
+		// reading direction of the slider (set from the site language); mirrors navigation, swipe and transitions
+		this.rtl = (window.getComputedStyle(root).direction || root.getAttribute('dir')) === 'rtl';
+
 		this.reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 		this.cfg = {
 			autoplay: !!cfg.autoplay && !cfg.editor && !this.reduce,
@@ -70,7 +73,7 @@
 		root.style.setProperty('--ssh-speed', this.cfg.speed + 'ms');
 		root.classList.toggle('is-static', !this.autoplayOn);
 		root.setAttribute('aria-live', this.autoplayOn ? 'off' : 'polite');
-		root.setAttribute('data-dir', 'next');
+		root.setAttribute('data-dir', this.visualDir('next'));
 
 		this.slides.forEach(function (s, i) {
 			s.classList.toggle('is-active', i === this.current);
@@ -160,7 +163,7 @@
 			}
 		});
 
-		this.root.setAttribute('data-dir', dir);
+		this.root.setAttribute('data-dir', this.visualDir(dir));
 		this.root.setAttribute('data-tr', fx);
 
 		if (dur > 0) {
@@ -185,6 +188,14 @@
 			this.restartProgress();
 			this.schedule();
 		}
+	};
+
+	// The CSS transitions are written for LTR (next enters from the right), so RTL flips the side.
+	Slider.prototype.visualDir = function (dir) {
+		if (!this.rtl) {
+			return dir;
+		}
+		return dir === 'next' ? 'prev' : 'next';
 	};
 
 	Slider.prototype.next = function () {
@@ -376,11 +387,10 @@
 		// keyboard arrows
 		if (this.cfg.keyboard) {
 			root.addEventListener('keydown', function (e) {
-				var rtl = document.documentElement.dir === 'rtl' || document.body.classList.contains('rtl');
 				if (e.key === 'ArrowRight') {
-					rtl ? self.prev() : self.next();
+					self.rtl ? self.prev() : self.next();
 				} else if (e.key === 'ArrowLeft') {
-					rtl ? self.next() : self.prev();
+					self.rtl ? self.next() : self.prev();
 				} else if (e.key === 'Home') {
 					self.goTo(0);
 				} else if (e.key === 'End') {
@@ -408,7 +418,8 @@
 				var dx = e.clientX - sx;
 				var dy = e.clientY - sy;
 				if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-					dx < 0 ? self.next() : self.prev();
+					// swiping toward the start of the line goes forward: left in LTR, right in RTL
+						(dx < 0) !== self.rtl ? self.next() : self.prev();
 				}
 			}, { passive: true });
 			root.addEventListener('pointercancel', function () { tracking = false; }, { passive: true });

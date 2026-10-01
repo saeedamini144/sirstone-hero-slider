@@ -416,6 +416,13 @@
 		linear-gradient(0deg, rgba(23, 19, 16, .5) 0%, transparent 30%);
 }
 
+/* the dark side of the scrim sits under the text, so it follows the reading direction */
+.ssh-hero[dir="rtl"] .ssh-scrim {
+	background:
+		linear-gradient(260deg, rgba(23, 19, 16, .92) 0%, rgba(23, 19, 16, .72) 26%, rgba(23, 19, 16, .28) 52%, rgba(23, 19, 16, .12) 68%, rgba(23, 19, 16, .42) 100%),
+		linear-gradient(0deg, rgba(23, 19, 16, .5) 0%, transparent 30%);
+}
+
 .ssh-hero .ssh-vignette {
 	background: radial-gradient(ellipse at center, transparent var(--ssh-vg-start, 55%), var(--ssh-vg-color, rgba(0, 0, 0, .6)) 100%);
 }
@@ -503,7 +510,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: var(--ssh-ai, flex-start);
-	text-align: left;
+	text-align: start;
 }
 
 /* entrance animation for each content block */
@@ -751,15 +758,15 @@
 }
 
 .ssh-hero .ssh-spec:first-child {
-	padding-left: 0;
+	padding-inline-start: 0;
 }
 
 .ssh-hero .ssh-spec:last-child {
-	padding-right: 0;
+	padding-inline-end: 0;
 }
 
 .ssh-hero .ssh-spec + .ssh-spec {
-	border-left: var(--ssh-spec-div-w, 1px) solid var(--ssh-spec-div-c, rgba(242, 236, 222, .18));
+	border-inline-start: var(--ssh-spec-div-w, 1px) solid var(--ssh-spec-div-c, rgba(242, 236, 222, .18));
 }
 
 .ssh-hero .ssh-spec__k {
@@ -782,7 +789,7 @@
    ===================================================================== */
 .ssh-hero .ssh-rail {
 	position: absolute;
-	left: 0;
+	inset-inline-start: 0;
 	top: 0;
 	bottom: 0;
 	z-index: 30;
@@ -791,13 +798,21 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(90deg, rgba(23, 19, 16, .55), transparent);
+	background: linear-gradient(to right, rgba(23, 19, 16, .55), transparent);
 }
 
-.ssh-hero.ssh-hero--rail-right .ssh-rail {
-	left: auto;
-	right: 0;
-	background: linear-gradient(270deg, rgba(23, 19, 16, .55), transparent);
+.ssh-hero[dir="rtl"] .ssh-rail {
+	background: linear-gradient(to left, rgba(23, 19, 16, .55), transparent);
+}
+
+.ssh-hero.ssh-hero--rail-end .ssh-rail {
+	inset-inline-start: auto;
+	inset-inline-end: 0;
+	background: linear-gradient(to left, rgba(23, 19, 16, .55), transparent);
+}
+
+.ssh-hero[dir="rtl"].ssh-hero--rail-end .ssh-rail {
+	background: linear-gradient(to right, rgba(23, 19, 16, .55), transparent);
 }
 
 .ssh-hero .ssh-rail .ssh-rail__btn,
@@ -911,15 +926,15 @@
 	overflow: hidden;
 	background: none;
 	border: 0;
-	border-right: 1px solid rgba(242, 236, 222, .14);
+	border-inline-end: 1px solid rgba(242, 236, 222, .14);
 	border-radius: 0;
 	box-shadow: none;
 	cursor: pointer;
-	text-align: left;
+	text-align: start;
 }
 
 .ssh-hero .ssh-progress .ssh-progress__btn:last-child {
-	border-right: 0;
+	border-inline-end: 0;
 }
 
 .ssh-hero .ssh-progress .ssh-progress__btn:focus-visible {
@@ -935,7 +950,7 @@
 	transform-origin: left center;
 }
 
-[dir="rtl"] .ssh-hero .ssh-progress__fill {
+.ssh-hero[dir="rtl"] .ssh-progress__fill {
 	transform-origin: right center;
 }
 
@@ -999,16 +1014,16 @@
    ===================================================================== */
 .ssh-hero .ssh-ctrls {
 	position: absolute;
-	right: var(--ssh-ctrl-x, 28px);
+	inset-inline-end: var(--ssh-ctrl-x, 28px);
 	bottom: var(--ssh-ctrl-y, 96px);
 	z-index: 31;
 	display: flex;
 	gap: 8px;
 }
 
-.ssh-hero.ssh-hero--ctrl-left .ssh-ctrls {
-	right: auto;
-	left: var(--ssh-ctrl-x, 28px);
+.ssh-hero.ssh-hero--ctrl-start .ssh-ctrls {
+	inset-inline-end: auto;
+	inset-inline-start: var(--ssh-ctrl-x, 28px);
 }
 
 .ssh-hero .ssh-ctrls .ssh-ctrl,
@@ -1054,6 +1069,14 @@
 	line-height: 1;
 }
 
+/* prev / next arrows point along the reading direction */
+.ssh-hero[dir="rtl"] .ssh-ctrl--prev svg,
+.ssh-hero[dir="rtl"] .ssh-ctrl--prev i,
+.ssh-hero[dir="rtl"] .ssh-ctrl--next svg,
+.ssh-hero[dir="rtl"] .ssh-ctrl--next i {
+	transform: scaleX(-1);
+}
+
 .ssh-hero .ssh-ctrl--play .ssh-ctrl__pause { display: block; }
 .ssh-hero .ssh-ctrl--play .ssh-ctrl__play { display: none; }
 .ssh-hero .ssh-ctrl--play.is-off .ssh-ctrl__pause { display: none; }
@@ -1064,7 +1087,8 @@
    ===================================================================== */
 @media (max-width: 1024px) {
 	.ssh-hero .ssh-content {
-		padding: 0 100px 100px 120px;
+		padding-block: 0 100px;
+		padding-inline: 120px 100px;
 	}
 }
 
@@ -1100,7 +1124,7 @@
 	}
 
 	.ssh-hero .ssh-spec + .ssh-spec {
-		border-left: 0;
+		border-inline-start: 0;
 	}
 
 	.ssh-hero .ssh-progress__name {

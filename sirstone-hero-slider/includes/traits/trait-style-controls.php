@@ -25,6 +25,14 @@ trait Style_Controls {
 		], $extra );
 	}
 
+	/**
+	 * Default letter-spacing for a typography group. Persian / Arabic letters
+	 * must stay joined, so RTL sites default to no tracking (still editable).
+	 */
+	private static function tracking( $px ) {
+		return [ 'default' => [ 'unit' => 'px', 'size' => is_rtl() ? 0 : $px ] ];
+	}
+
 	private static function box( $top, $right, $bottom, $left ) {
 		return [
 			'top'      => (string) $top,
@@ -133,7 +141,8 @@ trait Style_Controls {
 			'type'           => Controls_Manager::DIMENSIONS,
 			'size_units'     => [ 'px', '%', 'em', 'vw' ],
 			'default'        => self::box( 0, 200, 90, 200 ),
-			'tablet_default' => self::box( 0, 100, 100, 120 ),
+			// the side that faces the vertical index (rail) gets the larger padding
+			'tablet_default' => is_rtl() ? self::box( 0, 120, 100, 100 ) : self::box( 0, 100, 100, 120 ),
 			'mobile_default' => self::box( 0, 28, 100, 28 ),
 			'selectors'      => [ self::R . ' .ssh-content' => self::dims( 'padding' ) ],
 		] );
@@ -197,7 +206,7 @@ trait Style_Controls {
 			'selector'       => $sel,
 			'fields_options' => self::typo( 'Manrope', 12, '500', [
 				'text_transform' => [ 'default' => 'uppercase' ],
-				'letter_spacing' => [ 'default' => [ 'unit' => 'px', 'size' => 2.9 ] ],
+				'letter_spacing' => self::tracking( 2.9 ),
 			] ),
 		] );
 
@@ -320,7 +329,7 @@ trait Style_Controls {
 					'mobile_default' => [ 'unit' => 'px', 'size' => 38 ],
 				],
 				'line_height'    => [ 'default' => [ 'unit' => 'em', 'size' => 1.06 ] ],
-				'letter_spacing' => [ 'default' => [ 'unit' => 'px', 'size' => 1.2 ] ],
+				'letter_spacing' => self::tracking( 1.2 ),
 			] ),
 		] );
 
@@ -511,7 +520,7 @@ trait Style_Controls {
 			'selector'       => $sel,
 			'fields_options' => self::typo( 'Manrope', 13, '400', [
 				'text_transform' => [ 'default' => 'uppercase' ],
-				'letter_spacing' => [ 'default' => [ 'unit' => 'px', 'size' => 0.65 ] ],
+				'letter_spacing' => self::tracking( 0.65 ),
 			] ),
 		] );
 
@@ -688,7 +697,7 @@ trait Style_Controls {
 		$this->add_control( 'specs_divider_hide', [
 			'label'     => esc_html__( 'مخفی کردن خط‌های جداکننده', 'sirstone-hero' ),
 			'type'      => Controls_Manager::SWITCHER,
-			'selectors' => [ $sel . ' .ssh-spec + .ssh-spec' => 'border-left-width: 0;' ],
+			'selectors' => [ $sel . ' .ssh-spec + .ssh-spec' => 'border-inline-start-width: 0;' ],
 		] );
 
 		$this->add_control( 'specs_divider_color', [
@@ -737,7 +746,7 @@ trait Style_Controls {
 			'selector'       => $sel . ' .ssh-spec__k',
 			'fields_options' => self::typo( 'Manrope', 10, '400', [
 				'text_transform' => [ 'default' => 'uppercase' ],
-				'letter_spacing' => [ 'default' => [ 'unit' => 'px', 'size' => 1 ] ],
+				'letter_spacing' => self::tracking( 1 ),
 			] ),
 		] );
 

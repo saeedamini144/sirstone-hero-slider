@@ -337,10 +337,10 @@ trait Effects_Controls {
 		$this->add_control( 'rail_position', [
 			'label'   => esc_html__( 'سمت نمایش', 'sirstone-hero' ),
 			'type'    => Controls_Manager::SELECT,
-			'default' => 'left',
+			'default' => 'start',
 			'options' => [
-				'left'  => esc_html__( 'چپ', 'sirstone-hero' ),
-				'right' => esc_html__( 'راست', 'sirstone-hero' ),
+				'start' => is_rtl() ? esc_html__( 'راست (ابتدای خط)', 'sirstone-hero' ) : esc_html__( 'چپ (ابتدای خط)', 'sirstone-hero' ),
+				'end'   => is_rtl() ? esc_html__( 'چپ (انتهای خط)', 'sirstone-hero' ) : esc_html__( 'راست (انتهای خط)', 'sirstone-hero' ),
 			],
 		] );
 
@@ -401,7 +401,7 @@ trait Effects_Controls {
 			'selector'       => $rail . ' .ssh-rail__n',
 			'separator'      => 'before',
 			'fields_options' => self::typo( 'Manrope', 11, '400', [
-				'letter_spacing' => [ 'default' => [ 'unit' => 'px', 'size' => 0.66 ] ],
+				'letter_spacing' => self::tracking( 0.66 ),
 			] ),
 		] );
 
@@ -544,7 +544,7 @@ trait Effects_Controls {
 			'label'     => esc_html__( 'رنگ خط بین بخش‌ها', 'sirstone-hero' ),
 			'type'      => Controls_Manager::COLOR,
 			'default'   => 'rgba(242, 236, 222, 0.14)',
-			'selectors' => [ $btn => 'border-right-color: {{VALUE}};' ],
+			'selectors' => [ $btn => 'border-inline-end-color: {{VALUE}};' ],
 		] );
 
 		$this->add_control( 'progress_fill', [
@@ -561,7 +561,7 @@ trait Effects_Controls {
 			'size_units' => [ 'px' ],
 			'range'      => [ 'px' => [ 'min' => 0, 'max' => 80 ] ],
 			'default'    => [ 'unit' => 'px', 'size' => 20 ],
-			'selectors'  => [ $btn => 'padding-left: {{SIZE}}{{UNIT}}; padding-right: {{SIZE}}{{UNIT}};' ],
+			'selectors'  => [ $btn => 'padding-inline: {{SIZE}}{{UNIT}};' ],
 		] );
 
 		$this->add_control( 'progress_align', [
@@ -593,7 +593,7 @@ trait Effects_Controls {
 			'separator'      => 'before',
 			'fields_options' => self::typo( 'Manrope', 11.5, '400', [
 				'text_transform' => [ 'default' => 'uppercase' ],
-				'letter_spacing' => [ 'default' => [ 'unit' => 'px', 'size' => 0.92 ] ],
+				'letter_spacing' => self::tracking( 0.92 ),
 			] ),
 		] );
 
@@ -677,10 +677,10 @@ trait Effects_Controls {
 		$this->add_control( 'ctrl_position', [
 			'label'   => esc_html__( 'سمت نمایش', 'sirstone-hero' ),
 			'type'    => Controls_Manager::SELECT,
-			'default' => 'right',
+			'default' => 'end',
 			'options' => [
-				'right' => esc_html__( 'راست', 'sirstone-hero' ),
-				'left'  => esc_html__( 'چپ', 'sirstone-hero' ),
+				'end'   => is_rtl() ? esc_html__( 'چپ (انتهای خط)', 'sirstone-hero' ) : esc_html__( 'راست (انتهای خط)', 'sirstone-hero' ),
+				'start' => is_rtl() ? esc_html__( 'راست (ابتدای خط)', 'sirstone-hero' ) : esc_html__( 'چپ (ابتدای خط)', 'sirstone-hero' ),
 			],
 		] );
 
