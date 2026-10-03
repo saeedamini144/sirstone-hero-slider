@@ -31,7 +31,7 @@ trait Content_Controls {
 			'label'       => esc_html__( 'نام اسلاید', 'sirstone-hero' ),
 			'type'        => Controls_Manager::TEXT,
 			'label_block' => true,
-			'default'     => esc_html__( 'اسلاید', 'sirstone-hero' ),
+			'default'     => 'Lorem ipsum',
 			'description' => esc_html__( 'در نوار پایین و برای صفحه‌خوان‌ها نمایش داده می‌شود.', 'sirstone-hero' ),
 			'dynamic'     => [ 'active' => true ],
 		] );
@@ -48,7 +48,7 @@ trait Content_Controls {
 			'label'       => esc_html__( 'عنوان', 'sirstone-hero' ),
 			'type'        => Controls_Manager::TEXTAREA,
 			'rows'        => 2,
-			'default'     => esc_html__( 'عنوان اسلاید', 'sirstone-hero' ),
+			'default'     => 'Lorem ipsum dolor sit amet',
 			'description' => esc_html__( 'برای رفتن به خط بعد Enter بزنید.', 'sirstone-hero' ),
 			'dynamic'     => [ 'active' => true ],
 		] );
@@ -85,7 +85,7 @@ trait Content_Controls {
 			'label'       => esc_html__( 'متن دکمه', 'sirstone-hero' ),
 			'type'        => Controls_Manager::TEXT,
 			'label_block' => true,
-			'default'     => esc_html__( 'مشاهده محصولات', 'sirstone-hero' ),
+			'default'     => 'Lorem ipsum',
 			'condition'   => [ 'btn1_show' => 'yes' ],
 			'dynamic'     => [ 'active' => true ],
 		] );
@@ -123,7 +123,7 @@ trait Content_Controls {
 			'label'       => esc_html__( 'متن دکمه', 'sirstone-hero' ),
 			'type'        => Controls_Manager::TEXT,
 			'label_block' => true,
-			'default'     => esc_html__( 'درخواست مشاوره', 'sirstone-hero' ),
+			'default'     => 'Dolor sit amet',
 			'condition'   => [ 'btn2_show' => 'yes' ],
 			'dynamic'     => [ 'active' => true ],
 		] );
@@ -151,7 +151,7 @@ trait Content_Controls {
 			'type'        => Controls_Manager::TEXTAREA,
 			'rows'        => 4,
 			'separator'   => 'before',
-			'placeholder' => "Origin | Iran\nFormats | Slab / Tile",
+			'placeholder' => "Lorem | Ipsum\nDolor | Sit amet",
 			'description' => esc_html__( 'هر خط یک مورد: «عنوان | مقدار». خالی بگذارید تا نوار نمایش داده نشود.', 'sirstone-hero' ),
 			'dynamic'     => [ 'active' => true ],
 		] );
@@ -629,7 +629,7 @@ trait Content_Controls {
 		$this->add_control( 'aria_label', [
 			'label'     => esc_html__( 'برچسب دسترسی‌پذیری', 'sirstone-hero' ),
 			'type'      => Controls_Manager::TEXT,
-			'default'   => esc_html__( 'Sirstone — featured collections', 'sirstone-hero' ),
+			'default'   => 'Lorem ipsum dolor sit amet',
 			'separator' => 'before',
 		] );
 

@@ -230,38 +230,38 @@ class Sirstone_Hero_Widget extends Widget_Base {
 	 * -------------------------------------------------------------- */
 
 	private function default_slides() {
-		$base = 'https://sirstone.com/wp-content/uploads/2026/07/';
+		$placeholder = \Elementor\Utils::get_placeholder_image_src();
 
 		return [
 			[
-				'_id'         => 'ssh0brand',
-				'slide_name'  => 'Sirstone',
-				'eyebrow'     => 'Sirstone',
-				'title'       => 'Premium Natural Stone for Landmark Projects Worldwide',
+				'_id'         => 'ssh0lorem',
+				'slide_name'  => 'Lorem ipsum',
+				'eyebrow'     => 'Lorem ipsum',
+				'title'       => 'Lorem ipsum dolor sit amet consectetur',
 				'title_tag'   => 'h1',
-				'description' => 'From carefully selected natural stones to precision processing and reliable international logistics, Sirstone delivers premium materials for architects, contractors, developers, importers, and wholesalers.',
+				'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 				'btn1_show'   => 'yes',
-				'btn1_text'   => 'Explore Products',
-				'btn1_link'   => [ 'url' => 'https://sirstone.com/shop/' ],
+				'btn1_text'   => 'Lorem ipsum',
+				'btn1_link'   => [ 'url' => '#' ],
 				'btn2_show'   => 'yes',
-				'btn2_text'   => 'Request a Quote',
-				'btn2_link'   => [ 'url' => 'https://sirstone.com/contact-us/' ],
+				'btn2_text'   => 'Dolor sit amet',
+				'btn2_link'   => [ 'url' => '#' ],
 				'specs'       => '',
-				'image'       => [ 'url' => $base . 'Hero-section.webp' ],
+				'image'       => [ 'url' => $placeholder ],
 			],
 			[
-				'_id'         => 'ssh1crystal',
-				'slide_name'  => 'Crystal',
-				'eyebrow'     => 'Collection 01 — Natural Stone',
-				'title'       => 'Crystal Collection',
+				'_id'         => 'ssh1lorem',
+				'slide_name'  => 'Dolor sit',
+				'eyebrow'     => 'Lorem ipsum dolor',
+				'title'       => 'Ut enim ad minim veniam',
 				'title_tag'   => 'h2',
-				'description' => 'Discover the Crystal Collection, featuring premium crystal marble with refined patterns, elegant textures, and timeless beauty for luxury residential and commercial spaces.',
+				'description' => 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 				'btn1_show'   => 'yes',
-				'btn1_text'   => 'View Products',
-				'btn1_link'   => [ 'url' => 'https://sirstone.com/product-category/crystal-collection/' ],
+				'btn1_text'   => 'Lorem ipsum',
+				'btn1_link'   => [ 'url' => '#' ],
 				'btn2_show'   => '',
-				'specs'       => "Application | Interior & Exterior\nFormats | Block / Slab / Tile\nFinish | Polished, Honed",
-				'image'       => [ 'url' => $base . 'Crystal.webp' ],
+				'specs'       => "Lorem | Ipsum\nDolor | Sit amet\nConsectetur | Adipiscing",
+				'image'       => [ 'url' => $placeholder ],
 			],
 		];
 	}
